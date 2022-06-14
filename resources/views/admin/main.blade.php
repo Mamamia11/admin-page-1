@@ -22,6 +22,10 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('admin/src/plugins/datatables/css/responsive.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('admin/vendors/styles/style.css') }}">
 
+  {{-- toastr --}}
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+
+
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
   <script>
@@ -90,5 +94,21 @@
         }
     }
   </script>
+  {{-- notifikasi toastr --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+      <script>
+          $(document).ready(function() {
+              toastr.options.timeOut = 10000;
+              @if (Session::has('error'))
+                  toastr.error('{{ Session::get('error') }}');
+              @elseif(Session::has('success'))
+                  toastr.success('{{ Session::get('success') }}');
+              @elseif(Session::has('update'))
+                  toastr.success('{{ Session::get('update') }}');
+              @elseif(Session::has('delete'))
+                  toastr.success('{{ Session::get('delete') }}');
+              @endif
+          });
+      </script>
   </body>
 </html>

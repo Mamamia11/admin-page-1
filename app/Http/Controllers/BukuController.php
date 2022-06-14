@@ -98,24 +98,45 @@ class BukuController extends Controller
      * @param  \App\Models\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request, $id)
     {
-        //
-        $request->validate([
+        
+
+        $validated = $request->validate([
             'isbn' => 'required',
             'judul' => 'required',
+            'cover' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stok' => 'required',
-            'cover' => 'required',
-            'idpengarang' => 'required',
-            'idpenerbit' => 'required',
-            'idkategori' => 'required',
-            'idrak' => 'required',
+            'deskripsi' => 'required',
+            'halaman' => 'required',
+            'harga' => 'required',
+            'pengarang_id' => 'required',
+            'penerbit_id' => 'required',
+            'kategori_id' => 'required',
+            'rak_id' => 'required',
         ]);
-    
-        $buku->update($request->all());
-    
-        return redirect()->route('buku.index')
-                        ->with('success','Product updated successfully');
+
+
+        if($cover = $request->file('cover')) {
+            if($request->oldCover) {
+                $destinationPath = 'admin/vendors/images/';
+                $profileImage = date('YmdHis') . "." . $cover->getClientOriginalExtension();
+                $cover->move($destinationPath, $profileImage);
+                $validated['cover'] = "$profileImage";
+            } 
+
+        } 
+
+
+        $buku = Buku::where('id', $id)
+            ->update($validated);
+
+        if($buku) {
+            return redirect('admin/buku')->with('update', 'Buku berhasil diupdate!');
+        } else {
+            return redirect('admin/buku')->with('error', 'Buku gagal diupdate!');
+
+        }
     }
 
     /**
@@ -129,6 +150,6 @@ class BukuController extends Controller
         //
         $buku->DELETE();
         return redirect()->route('buku.index')
-                        ->with('success','Product deleted successfully');
+                        ->with('delete','Product deleted successfully');
     }
 }
