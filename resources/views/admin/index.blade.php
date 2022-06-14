@@ -23,53 +23,52 @@
 					</div>
 				</div>
 			</div>
-				<div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary p-4">
-                <div class="table-responsive">
-                    <table id="example" class="table align-items-center table-flush">
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col">NO</th>
-                                <th scope="col">TITLE</th>
-                                <th scope="col">EXCERPT</th>
-                                <th scope="col">IMAGE</th>
-                                <th scope="col">OPSI</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse ($bukus as $buku)
-                            <tr>
-                                <th scope="row">
-                                    {{ $loop->iteration }}
-                                </th>
-                                <td>
-                                    {{ $buku->isbn }}
-                                </td>
-                                <td>
-                                    {{ $buku->judul }}
-                                </td>
-                                <td>
-                                    {{ $buku->stok }}
-                                </td>
-                                <td>
-									<a class="btn btn-primary" href="{{ route('buku.edit',$buku->id) }}">Edit</a>
-                                    <form action="{{route('buku.destroy',$buku->id)}}" method="POST">
-									</a>
-										@csrf
-										@method('DELETE')
-										<button type="submit" class="btn btn-danger" onclick="return confirm('data yakin dihapus?')">Delete</i></button>
-										
-									</form>
-                                </td>
-                            </tr>
-                            @empty
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+
+
+				<!-- Export Datatable start -->
+				<div class="card-box mb-30">
+					<div class="pd-20">
+						<h4 class="text-blue h4">Detail</h4>
+					</div>
+					<div class="pb-20">
+						<table class="table hover multiple-select-row data-table-export nowrap">
+							<thead>
+								<tr>
+									<th>NO</th>
+									<th>JUDUL</th>
+									<th>ISBN</th>
+									<th>STOCK</th>
+									<th>OPSI</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach ($bukus as $buku)
+									<tr>
+										<td>{{ $loop->iteration }}</td>
+										<td>{{ $buku->judul }}</td>
+										<td>{{ $buku->isbn }}</td>
+										<td>{{ $buku->stok }}</td>
+										<td>
+											<a class="badge badge-primary" href="{{ route('buku.edit',$buku->id) }}">Edit</a>
+											<a class="badge badge-info" href="{{ route('buku.edit',$buku->id) }}">Detail</a>
+											<form action="{{route('buku.show', $buku->id)}}" method="POST">
+											</a>
+												@csrf
+												@method('DELETE')
+												<button type="submit" class="badge badge-danger border-0" onclick="return confirm('data yakin dihapus?')">Delete</i></button>
+												
+											</form>
+										</td>
+									</tr>
+								@endforeach
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<!-- Export Datatable End -->
+</div>
+
     </div>
 
 <br>

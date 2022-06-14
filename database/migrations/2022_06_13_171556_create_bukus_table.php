@@ -22,10 +22,10 @@ class CreateBukusTable extends Migration
             $table->text('deskripsi');
             $table->integer('halaman');
             $table->string('harga');
-            $table->foreignId('idpengarang');
-            $table->foreignId('idpenerbit');
-            $table->foreignId('idkategori');
-            $table->foreignId('idrak');
+            $table->foreignId('pengarang_id');
+            $table->foreignId('penerbit_id');
+            $table->foreignId('kategori_id');
+            $table->foreignId('rak_id');
             $table->timestamps();
         });
     }

@@ -21,5 +21,5 @@ use App\Http\Controllers\BukuController;
 //     return view('admin.index');
 // });
 
-Route::resource('buku', BukuController::class);
+Route::resource('admin/buku', BukuController::class);
 

@@ -15,7 +15,7 @@ class BukuController extends Controller
     public function index()
     {
         //
-        $bukus = Buku::latest()->paginate(5);
+        $bukus = Buku::latest()->get();
        
         return view('admin.index',compact('bukus'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -40,20 +40,29 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        //
         
-        $request->validate([
+        $validated = $request->validate([
             'isbn' => 'required',
             'judul' => 'required',
+            'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'stok' => 'required',
-            'cover' => 'required',
-            'idpengarang' => 'required',
-            'idpenerbit' => 'required',
-            'idkategori' => 'required',
-            'idrak' => 'required',
+            'deskripsi' => 'required',
+            'halaman' => 'required',
+            'harga' => 'required',
+            'pengarang_id' => 'required',
+            'penerbit_id' => 'required',
+            'kategori_id' => 'required',
+            'rak_id' => 'required',
         ]);
+
+        if($cover = $request->file('cover')) {
+            $destinationPath = 'admin/vendors/images/';
+            $profileImage = date('YmdHis') . "." . $cover->getClientOriginalExtension();
+            $cover->move($destinationPath, $profileImage);
+            $validated['cover'] = "$profileImage";
+        }
     
-        Buku::create($request->all());
+        Buku::create($validated);
      
         return redirect()->route('buku.index')
                         ->with('success','Product created successfully.');
